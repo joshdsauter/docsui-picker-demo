@@ -1,47 +1,44 @@
 package com.example.docsuipickerdemo
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.docsuipickerdemo.ui.theme.DocsUIPickerDemoTheme
+import android.util.Log
+import android.widget.Button
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            DocsUIPickerDemoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var selectedFileText: TextView
+
+    // Registering the file picker launcher
+    private val pickFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+        uri?.let {
+            Log.d("FilePicker", "Selected file URI: $uri")
+            selectedFileText.text = "Selected file:\n$uri"
+
+            // Optional: persist URI permission if you need to access the file later
+            contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+        } ?: run {
+            selectedFileText.text = "No file selected"
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DocsUIPickerDemoTheme {
-        Greeting("Android")
+        val pickFileButton = findViewById<Button>(R.id.pickFileButton)
+        selectedFileText = findViewById(R.id.selectedFileText)
+
+        pickFileButton.setOnClickListener {
+            // Launch file picker for any file type
+            pickFileLauncher.launch(arrayOf("*/*"))
+        }
     }
 }
