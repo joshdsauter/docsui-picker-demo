@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity() {
 
             // Get and display human-readable file name
             val fileName = getFileNameFromUri(this, uri)
-            selectedFileText.text = "Selected file: ${fileName ?: "Unknown"}"
+            val mimeType = contentResolver.getType(uri)
+            selectedFileText.text = "Selected file:\n${fileName ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}"
 
             // Optional: persist URI permission
             contentResolver.takePersistableUriPermission(
