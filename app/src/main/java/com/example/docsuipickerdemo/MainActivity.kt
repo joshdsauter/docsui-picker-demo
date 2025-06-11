@@ -1,8 +1,10 @@
 package com.example.docsuipickerdemo
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
@@ -17,9 +19,12 @@ class MainActivity : AppCompatActivity() {
     private val pickFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
         uri?.let {
             Log.d("FilePicker", "Selected file URI: $uri")
-            selectedFileText.text = "Selected file:\n$uri"
 
-            // Optional: persist URI permission if you need to access the file later
+            // Get and display human-readable file name
+            val fileName = getFileNameFromUri(this, uri)
+            selectedFileText.text = "Selected file: ${fileName ?: "Unknown"}"
+
+            // Optional: persist URI permission
             contentResolver.takePersistableUriPermission(
                 uri,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -41,4 +46,19 @@ class MainActivity : AppCompatActivity() {
             pickFileLauncher.launch(arrayOf("*/*"))
         }
     }
+
+    private fun getFileNameFromUri(context: Context, uri: Uri): String? {
+        var name: String? = null
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val index = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                if (index != -1) {
+                    name = it.getString(index)
+                }
+            }
+        }
+        return name
+    }
+
 }
