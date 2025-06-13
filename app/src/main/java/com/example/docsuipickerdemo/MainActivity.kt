@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Button
+import android.widget.Switch
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -14,26 +15,47 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var selectedFileText: TextView
+    private lateinit var multiSelectSwitch: Switch
 
-    // Registering the file picker launcher
-    private val pickFileLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
-        uri?.let {
-            Log.d("FilePicker", "Selected file URI: $uri")
-
-            // Get and display human-readable file name
-            val fileName = getFileNameFromUri(this, uri)
-            val mimeType = contentResolver.getType(uri)
-            selectedFileText.text = "Selected file:\n${fileName ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}"
-
-            // Optional: persist URI permission
-            contentResolver.takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-            )
-        } ?: run {
-            selectedFileText.text = "No file selected"
+    private val pickSingleFileLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            uri?.let {
+                val fileName = getFileNameFromUri(this, it)
+                val mimeType = contentResolver.getType(it)
+                selectedFileText.text = "Selected file:\n${fileName ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}"
+                contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+            } ?: run {
+                selectedFileText.text = "No file selected"
+            }
         }
-    }
+
+    private val pickMultipleFilesLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris: List<Uri> ->
+            if (uris.isNotEmpty()) {
+                for (uri in uris) {
+                    try {
+                        contentResolver.takePersistableUriPermission(
+                            uri,
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        )
+                    } catch (e: SecurityException) {
+                        Log.w("FilePicker", "Failed to persist permission for $uri: ${e.message}")
+                    }
+                }
+
+                val fileDescriptions = uris.joinToString("\n\n") { uri ->
+                    val fileName = getFileNameFromUri(this, uri)
+                    val mimeType = contentResolver.getType(uri)
+                    "File: ${fileName ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}"
+                }
+                selectedFileText.text = "Selected files:\n\n$fileDescriptions"
+            } else {
+                selectedFileText.text = "No files selected"
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,10 +63,16 @@ class MainActivity : AppCompatActivity() {
 
         val pickFileButton = findViewById<Button>(R.id.pickFileButton)
         selectedFileText = findViewById(R.id.selectedFileText)
+        multiSelectSwitch = findViewById(R.id.multiSelectSwitch)
 
         pickFileButton.setOnClickListener {
-            // Launch file picker for any file type
-            pickFileLauncher.launch(arrayOf("*/*"))
+            if (multiSelectSwitch.isChecked) {
+                // Launch multi file picker
+                pickMultipleFilesLauncher.launch(arrayOf("*/*"))
+            } else {
+                // Launch single file picker
+                pickSingleFileLauncher.launch(arrayOf("*/*"))
+            }
         }
     }
 
