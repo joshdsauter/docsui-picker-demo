@@ -12,13 +12,11 @@
         android:layout_height="wrap_content"
         android:text="Pick a File" />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/multiSelectSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enable Multi-Select"
-        android:checked="false"
-        />
+        android:text="Enable Multi-Select" />
 
     <TextView
         android:id="@+id/selectedFileText"
