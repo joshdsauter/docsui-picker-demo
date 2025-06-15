@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.appcompat.widget.SwitchCompat
@@ -68,6 +69,14 @@ class MainActivity : AppCompatActivity() {
         multiSelectSwitch = findViewById(R.id.multiSelectSwitch)
         mimeTypeSpinner = findViewById(R.id.mimeTypeSpinner)
 
+        val mimeTypes = resources.getStringArray(R.array.mime_types)
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.spinner_item_centered,
+            mimeTypes
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        mimeTypeSpinner.adapter = adapter
 
         pickFileButton.setOnClickListener {
             val selectedMimeType = mimeTypeSpinner.selectedItem as String
