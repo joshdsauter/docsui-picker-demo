@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">DocsUIPickerDemo</string>
+    <string-array name="mime_types">
+        <item>*/*</item>
+        <item>application/pdf</item>
+        <item>image/*</item>
+        <item>video/*</item>
+        <item>audio/*</item>
+        <item>text/plain</item>
+    </string-array>
 </resources>

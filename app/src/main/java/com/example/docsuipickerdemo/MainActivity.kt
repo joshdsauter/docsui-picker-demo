@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Button
+import android.widget.Spinner
 import androidx.appcompat.widget.SwitchCompat
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var selectedFileText: TextView
     private lateinit var multiSelectSwitch: SwitchCompat
+    private lateinit var mimeTypeSpinner: Spinner
 
     private val pickSingleFileLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
@@ -64,14 +66,16 @@ class MainActivity : AppCompatActivity() {
         val pickFileButton = findViewById<Button>(R.id.pickFileButton)
         selectedFileText = findViewById(R.id.selectedFileText)
         multiSelectSwitch = findViewById(R.id.multiSelectSwitch)
+        mimeTypeSpinner = findViewById(R.id.mimeTypeSpinner)
+
 
         pickFileButton.setOnClickListener {
+            val selectedMimeType = mimeTypeSpinner.selectedItem as String
+
             if (multiSelectSwitch.isChecked) {
-                // Launch multi file picker
-                pickMultipleFilesLauncher.launch(arrayOf("*/*"))
+                pickMultipleFilesLauncher.launch(arrayOf(selectedMimeType))
             } else {
-                // Launch single file picker
-                pickSingleFileLauncher.launch(arrayOf("*/*"))
+                pickSingleFileLauncher.launch(arrayOf(selectedMimeType))
             }
         }
     }

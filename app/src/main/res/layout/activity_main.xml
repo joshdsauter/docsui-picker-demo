@@ -18,6 +18,13 @@
         android:layout_height="wrap_content"
         android:text="Enable Multi-Select" />
 
+    <Spinner
+        android:id="@+id/mimeTypeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/mime_types"
+        android:layout_marginTop="16dp" />
+
     <TextView
         android:id="@+id/selectedFileText"
         android:layout_width="wrap_content"
