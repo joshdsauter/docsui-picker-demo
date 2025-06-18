@@ -53,6 +53,8 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.google.guava:guava:31.1-android")
     implementation(libs.androidx.compiler)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
