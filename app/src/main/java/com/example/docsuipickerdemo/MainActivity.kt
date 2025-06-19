@@ -13,6 +13,7 @@ import androidx.appcompat.widget.SwitchCompat
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.example.docsuipickerdemo.data.FileMeta
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,9 +24,10 @@ class MainActivity : AppCompatActivity() {
     private val pickSingleFileLauncher =
         registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
             uri?.let {
-                val fileName = getFileNameFromUri(this, it)
+                val meta = getFileMetaFromUri(this, it)
                 val mimeType = contentResolver.getType(it)
-                selectedFileText.text = "Selected file:\n${fileName ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}"
+                val readableSize = meta.sizeInBytes?.let { bytes -> formatFileSize(bytes) } ?: "Unknown"
+                selectedFileText.text = "Selected file:\n${meta.name ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}\nSize: $readableSize"
                 contentResolver.takePersistableUriPermission(
                     uri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -50,9 +52,10 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 val fileDescriptions = uris.joinToString("\n\n") { uri ->
-                    val fileName = getFileNameFromUri(this, uri)
+                    val meta = getFileMetaFromUri(this, uri)
                     val mimeType = contentResolver.getType(uri)
-                    "File: ${fileName ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}"
+                    val readableSize = meta.sizeInBytes?.let { bytes -> formatFileSize(bytes) } ?: "Unknown"
+                    "File: ${meta.name ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}\nSize: $readableSize"
                 }
                 selectedFileText.text = "Selected files:\n\n$fileDescriptions"
             } else {
@@ -103,4 +106,36 @@ class MainActivity : AppCompatActivity() {
         return name
     }
 
+    private fun getFileMetaFromUri(context: Context, uri: Uri): FileMeta {
+        var name: String? = null
+        var size: Long? = null
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+
+                if (nameIndex != -1) {
+                    name = it.getString(nameIndex)
+                }
+                if (sizeIndex != -1) {
+                    size = it.getLong(sizeIndex)
+                }
+            }
+        }
+        return FileMeta(name, size)
+    }
+
+    private fun formatFileSize(sizeInBytes: Long): String {
+        val kb = 1024
+        val mb = kb * 1024
+        val gb = mb * 1024
+
+        return when {
+            sizeInBytes >= gb -> String.format("%.2f GB", sizeInBytes.toFloat() / gb)
+            sizeInBytes >= mb -> String.format("%.2f MB", sizeInBytes.toFloat() / mb)
+            sizeInBytes >= kb -> String.format("%.2f KB", sizeInBytes.toFloat() / kb)
+            else -> "$sizeInBytes B"
+        }
+    }
 }
