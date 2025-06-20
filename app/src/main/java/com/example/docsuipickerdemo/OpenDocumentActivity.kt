@@ -65,7 +65,7 @@ class OpenDocumentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_open_document)
 
         val pickFileButton = findViewById<Button>(R.id.pickFileButton)
         selectedFileText = findViewById(R.id.selectedFileText)
