@@ -10,20 +10,20 @@
         android:id="@+id/openDocumentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open Document"
+        android:text="@string/open_document"
         android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/createDocumentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Document"
+        android:text="@string/create_document"
         android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/openDocumentTreeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open Folder"/>
+        android:text="@string/open_folder"/>
 
 </LinearLayout>

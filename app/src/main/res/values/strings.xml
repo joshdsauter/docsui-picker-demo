@@ -8,4 +8,7 @@
         <item>audio/*</item>
         <item>text/plain</item>
     </string-array>
+    <string name="open_document">Open Document</string>
+    <string name="create_document">Create Document</string>
+    <string name="open_folder">Open Folder</string>
 </resources>
