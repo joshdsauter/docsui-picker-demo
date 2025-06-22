@@ -27,13 +27,19 @@ class OpenDocumentActivity : AppCompatActivity() {
                 val meta = getFileMetaFromUri(this, it)
                 val mimeType = contentResolver.getType(it)
                 val readableSize = meta.sizeInBytes?.let { bytes -> formatFileSize(bytes) } ?: "Unknown"
-                selectedFileText.text = "Selected file:\n${meta.name ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}\nSize: $readableSize"
+                val fileInfo = getString(
+                    R.string.file_info,
+                    meta.name ?: getString(R.string.unknown),
+                    mimeType ?: getString(R.string.unknown),
+                    readableSize
+                )
+                selectedFileText.text = fileInfo
                 contentResolver.takePersistableUriPermission(
                     uri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
             } ?: run {
-                selectedFileText.text = "No file selected"
+                selectedFileText.text = getString(R.string.no_file_selected)
             }
         }
 
@@ -54,12 +60,19 @@ class OpenDocumentActivity : AppCompatActivity() {
                 val fileDescriptions = uris.joinToString("\n\n") { uri ->
                     val meta = getFileMetaFromUri(this, uri)
                     val mimeType = contentResolver.getType(uri)
-                    val readableSize = meta.sizeInBytes?.let { bytes -> formatFileSize(bytes) } ?: "Unknown"
-                    "File: ${meta.name ?: "Unknown"}\nType: ${mimeType ?: "Unknown"}\nSize: $readableSize"
+                    val readableSize = meta.sizeInBytes?.let { bytes -> formatFileSize(bytes) } ?: getString(R.string.unknown)
+
+                    getString(
+                        R.string.file_info,
+                        meta.name ?: getString(R.string.unknown),
+                        mimeType ?: getString(R.string.unknown),
+                        readableSize
+                    )
                 }
-                selectedFileText.text = "Selected files:\n\n$fileDescriptions"
+
+                selectedFileText.text = getString(R.string.selected_files, fileDescriptions)
             } else {
-                selectedFileText.text = "No files selected"
+                selectedFileText.text = getString(R.string.no_files_selected)
             }
         }
 
