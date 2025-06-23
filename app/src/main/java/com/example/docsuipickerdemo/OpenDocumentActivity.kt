@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.docsuipickerdemo.data.FileMeta
+import java.util.Locale
 
 class OpenDocumentActivity : AppCompatActivity() {
 
@@ -105,20 +106,6 @@ class OpenDocumentActivity : AppCompatActivity() {
         }
     }
 
-    private fun getFileNameFromUri(context: Context, uri: Uri): String? {
-        var name: String? = null
-        val cursor = context.contentResolver.query(uri, null, null, null, null)
-        cursor?.use {
-            if (it.moveToFirst()) {
-                val index = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                if (index != -1) {
-                    name = it.getString(index)
-                }
-            }
-        }
-        return name
-    }
-
     private fun getFileMetaFromUri(context: Context, uri: Uri): FileMeta {
         var name: String? = null
         var size: Long? = null
@@ -145,9 +132,9 @@ class OpenDocumentActivity : AppCompatActivity() {
         val gb = mb * 1024
 
         return when {
-            sizeInBytes >= gb -> String.format("%.2f GB", sizeInBytes.toFloat() / gb)
-            sizeInBytes >= mb -> String.format("%.2f MB", sizeInBytes.toFloat() / mb)
-            sizeInBytes >= kb -> String.format("%.2f KB", sizeInBytes.toFloat() / kb)
+            sizeInBytes >= gb -> String.format(Locale.US, "%.2f GB", sizeInBytes.toFloat() / gb)
+            sizeInBytes >= mb -> String.format(Locale.US, "%.2f MB", sizeInBytes.toFloat() / mb)
+            sizeInBytes >= kb -> String.format(Locale.US, "%.2f KB", sizeInBytes.toFloat() / kb)
             else -> "$sizeInBytes B"
         }
     }
