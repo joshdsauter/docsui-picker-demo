@@ -13,6 +13,7 @@
     <string name="open_folder">Open Folder</string>
     <string name="file_info">Selected file:\nName: %1$s\nType: %2$s\nSize: %3$s</string>
     <string name="unknown">Unknown</string>
+    <string name="select_file_type">Select file type</string>
     <string name="no_file_selected">No file selected</string>
     <string name="no_files_selected">No files selected</string>
     <string name="selected_files">Selected files:\n\n%1$s</string>
