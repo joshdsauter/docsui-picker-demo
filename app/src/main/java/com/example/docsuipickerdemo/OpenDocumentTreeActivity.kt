@@ -1,20 +1,41 @@
 package com.example.docsuipickerdemo
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
+import android.widget.Button
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class OpenDocumentTreeActivity : AppCompatActivity() {
+
+    private lateinit var selectedDirectoryText: TextView
+
+    private val openDocumentTreeLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri: Uri? ->
+            uri?.let {
+                contentResolver.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+                selectedDirectoryText.text = getString(R.string.selected_directory, it.toString())
+                Log.d("DirectoryPicker", "Selected directory URI: $it")
+            } ?: run {
+                selectedDirectoryText.text = getString(R.string.no_directory_selected)
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_open_document_tree)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        val pickDirectoryButton = findViewById<Button>(R.id.pickDirectoryButton)
+        selectedDirectoryText = findViewById(R.id.selectedDirectoryText)
+
+        pickDirectoryButton.setOnClickListener {
+            openDocumentTreeLauncher.launch(null)
         }
     }
 }

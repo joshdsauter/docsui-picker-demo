@@ -14,10 +14,14 @@
         tools:targetApi="31">
         <activity
             android:name=".OpenDocumentTreeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Open Document Tree"
+            android:theme="@style/Theme.DocsUIPickerDemo" />
         <activity
             android:name=".CreateDocumentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Create Document"
+            android:theme="@style/Theme.DocsUIPickerDemo"/>
         <activity
             android:name=".OpenDocumentActivity"
             android:exported="true"

@@ -17,4 +17,7 @@
     <string name="no_file_selected">No file selected</string>
     <string name="no_files_selected">No files selected</string>
     <string name="selected_files">Selected files:\n\n%1$s</string>
+    <string name="select_directory">Select Directory</string>
+    <string name="no_directory_selected">No directory selected</string>
+    <string name="selected_directory">Selected directory:\n%s</string>
 </resources>
