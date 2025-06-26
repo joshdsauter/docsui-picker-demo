@@ -23,17 +23,20 @@
             android:label="Create Document"
             android:theme="@style/Theme.DocsUIPickerDemo"/>
         <activity
-            android:name=".OpenDocumentActivity"
+            android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.DocsUIPickerDemo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+            android:name=".OpenDocumentActivity"
+            android:exported="false"
+            android:label="Open Document"
+            android:theme="@style/Theme.DocsUIPickerDemo" />
+
     </application>
 </manifest>
