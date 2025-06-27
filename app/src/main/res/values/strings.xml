@@ -20,4 +20,5 @@
     <string name="select_directory">Select Directory</string>
     <string name="no_directory_selected">No directory selected</string>
     <string name="selected_directory">Selected directory:\n%s</string>
+    <string name="back_to_main">Back to Main Menu</string>
 </resources>

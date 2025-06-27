@@ -85,6 +85,10 @@ class OpenDocumentActivity : AppCompatActivity() {
         selectedFileText = findViewById(R.id.selectedFileText)
         multiSelectSwitch = findViewById(R.id.multiSelectSwitch)
         mimeTypeSpinner = findViewById(R.id.mimeTypeSpinner)
+        findViewById<Button>(R.id.backToMainButton).setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish() // optional: closes the current activity
+        }
 
         val mimeTypes = resources.getStringArray(R.array.mime_types)
         val adapter = ArrayAdapter(

@@ -42,6 +42,10 @@ class CreateDocumentActivity : AppCompatActivity() {
         val createFileButton = findViewById<Button>(R.id.createFileButton)
         selectedFileText = findViewById(R.id.createdFileText)
         mimeTypeSpinner = findViewById(R.id.mimeTypeSpinnerCreate)
+        findViewById<Button>(R.id.backToMainButton).setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish() // optional: closes the current activity
+        }
 
         val mimeTypes = resources.getStringArray(R.array.mime_types)
         val adapter = ArrayAdapter(

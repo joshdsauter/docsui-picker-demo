@@ -30,6 +30,10 @@ class OpenDocumentTreeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_document_tree)
+        findViewById<Button>(R.id.backToMainButton).setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish() // optional: closes the current activity
+        }
 
         val pickDirectoryButton = findViewById<Button>(R.id.pickDirectoryButton)
         selectedDirectoryText = findViewById(R.id.selectedDirectoryText)
