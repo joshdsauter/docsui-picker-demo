@@ -17,7 +17,8 @@ class CreateDocumentActivity : AppCompatActivity() {
     private lateinit var mimeTypeSpinner: Spinner
 
     private val createDocumentLauncher =
-        registerForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri: Uri? ->
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val uri = result.data?.data
             uri?.let {
                 val meta = getFileMetaFromUri(this, it)
                 val mimeType = contentResolver.getType(it)
@@ -58,14 +59,12 @@ class CreateDocumentActivity : AppCompatActivity() {
 
         createFileButton.setOnClickListener {
             val selectedMimeType = mimeTypeSpinner.selectedItem as String
-
-            // Update intent MIME type dynamically
             val createIntent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = selectedMimeType
                 putExtra(Intent.EXTRA_TITLE, "new_file.txt")
             }
-            createDocumentLauncher.launch("new_file.txt")
+            createDocumentLauncher.launch(createIntent)
         }
     }
 
