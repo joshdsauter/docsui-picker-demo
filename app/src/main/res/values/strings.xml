@@ -10,6 +10,7 @@
     </string-array>
     <string name="open_document">Open Document</string>
     <string name="create_document">Create Document</string>
+    <string name="hint_enter_file_name">Enter file name (e.g. myfile.txt)</string>
     <string name="open_folder">Open Folder</string>
     <string name="file_info">Selected file:\nName: %1$s\nType: %2$s\nSize: %3$s</string>
     <string name="unknown">Unknown</string>

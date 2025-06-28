@@ -40,6 +40,7 @@ class CreateDocumentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_document)
 
+        val fileNameInput = findViewById<EditText>(R.id.fileNameInput)
         val createFileButton = findViewById<Button>(R.id.createFileButton)
         selectedFileText = findViewById(R.id.createdFileText)
         mimeTypeSpinner = findViewById(R.id.mimeTypeSpinnerCreate)
@@ -59,13 +60,17 @@ class CreateDocumentActivity : AppCompatActivity() {
 
         createFileButton.setOnClickListener {
             val selectedMimeType = mimeTypeSpinner.selectedItem as String
+            val fileName = fileNameInput.text.toString().ifBlank { "new_file.txt" }
+
             val createIntent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = selectedMimeType
-                putExtra(Intent.EXTRA_TITLE, "new_file.txt")
+                putExtra(Intent.EXTRA_TITLE, fileName)
             }
+
             createDocumentLauncher.launch(createIntent)
         }
+
     }
 
     private fun getFileMetaFromUri(context: Context, uri: Uri): FileMeta {
