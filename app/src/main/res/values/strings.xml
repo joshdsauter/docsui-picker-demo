@@ -24,4 +24,8 @@
     <string name="no_directory_selected">No directory selected</string>
     <string name="selected_directory">Selected directory:\n%s</string>
     <string name="back_to_main">Back to Main Menu</string>
+    <string name="open_document_title">Open Document</string>
+    <string name="multi_select">Enable Multi-Select</string>
+    <string name="select_mime_type">Select File Type</string>
+    <string name="pick_file">Pick a File</string>
 </resources>

@@ -1,49 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/pickFileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pick a File" />
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/multiSelectSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enable Multi-Select" />
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select file type"
-        android:textSize="14sp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="8dp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center_horizontal">
 
-    <Spinner
-        android:id="@+id/mimeTypeSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"/>
+        <!-- Header -->
+        <TextView
+            android:id="@+id/headerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/open_document_title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
 
-    <TextView
-        android:id="@+id/selectedFileText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:text="No file selected" />
+        <!-- Multi-select toggle -->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/multiSelectSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/multi_select"
+            android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/backToMainButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/back_to_main"
-        android:layout_marginTop="24dp" />
-</LinearLayout>
+        <!-- Mime type label -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_mime_type"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Mime type spinner -->
+        <Spinner
+            android:id="@+id/mimeTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Pick file button -->
+        <Button
+            android:id="@+id/pickFileButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pick_file"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Back to main menu button -->
+        <Button
+            android:id="@+id/backToMainButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/back_to_main"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Selected file result text -->
+        <TextView
+            android:id="@+id/selectedFileText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_file_selected"
+            android:paddingTop="16dp" />
+    </LinearLayout>
+</ScrollView>
