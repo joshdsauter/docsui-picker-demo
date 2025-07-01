@@ -28,4 +28,7 @@
     <string name="multi_select">Enable Multi-Select</string>
     <string name="select_mime_type">Select File Type</string>
     <string name="pick_file">Pick a File</string>
+    <string name="create_document_title">Create Document</string>
+    <string name="enter_file_name">Enter file name (e.g., new_file.txt)</string>
+    <string name="create_file">Create File</string>
 </resources>
