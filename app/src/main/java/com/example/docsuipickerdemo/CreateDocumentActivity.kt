@@ -44,19 +44,19 @@ class CreateDocumentActivity : AppCompatActivity() {
         val createFileButton = findViewById<Button>(R.id.createFileButton)
         selectedFileText = findViewById(R.id.createdFileText)
         mimeTypeSpinner = findViewById(R.id.mimeTypeSpinnerCreate)
+
         findViewById<Button>(R.id.backToMainButton).setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
-            finish() // optional: closes the current activity
+            finish()
         }
 
-        val mimeTypes = resources.getStringArray(R.array.mime_types)
-        val adapter = ArrayAdapter(
+        mimeTypeSpinner.adapter = ArrayAdapter(
             this,
             R.layout.spinner_item_centered,
-            mimeTypes
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        mimeTypeSpinner.adapter = adapter
+            resources.getStringArray(R.array.mime_types)
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
 
         createFileButton.setOnClickListener {
             val selectedMimeType = mimeTypeSpinner.selectedItem as String
@@ -70,8 +70,8 @@ class CreateDocumentActivity : AppCompatActivity() {
 
             createDocumentLauncher.launch(createIntent)
         }
-
     }
+
 
     private fun getFileMetaFromUri(context: Context, uri: Uri): FileMeta {
         var name: String? = null
