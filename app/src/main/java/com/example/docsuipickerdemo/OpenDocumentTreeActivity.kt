@@ -20,7 +20,8 @@ class OpenDocumentTreeActivity : AppCompatActivity() {
                     it,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
-                selectedDirectoryText.text = getString(R.string.selected_directory, it.toString())
+                val directoryName = getReadableDirectoryName(it)
+                selectedDirectoryText.text = getString(R.string.selected_directory, directoryName)
                 Log.d("DirectoryPicker", "Selected directory URI: $it")
             } ?: run {
                 selectedDirectoryText.text = getString(R.string.no_directory_selected)
@@ -42,4 +43,12 @@ class OpenDocumentTreeActivity : AppCompatActivity() {
             openDocumentTreeLauncher.launch(null)
         }
     }
+
+    fun getReadableDirectoryName(uri: Uri): String {
+        val path = uri.path ?: return uri.toString()
+        val treePart = path.substringAfter("tree/")
+        val decoded = Uri.decode(treePart)
+        return decoded.substringAfter(":")
+    }
+
 }
